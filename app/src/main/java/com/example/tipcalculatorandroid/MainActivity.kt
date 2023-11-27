@@ -57,8 +57,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CalculateTip() {
-    var tip by remember { mutableStateOf(1) }
-    var total by remember { mutableStateOf(0) }
+    var amountInput by remember { mutableStateOf("") }
+
+    val amount = amountInput.toDoubleOrNull() ?: 0.0    //elvis operator that returns 0.0 if field is null
+    val tip = calculateTip(amount)
+
     Column(modifier = Modifier
         .statusBarsPadding()
         .padding(horizontal = 40.dp)
@@ -73,11 +76,11 @@ fun CalculateTip() {
                 .padding(bottom = 16.dp, top = 40.dp),
         )
 
-        EditNumberField(modifier = Modifier
+        EditNumberField(value = amountInput, onValueChange = {amountInput = it },modifier = Modifier
             .padding(bottom = 32.dp)
             .fillMaxWidth())
 
-        Text(text = stringResource(R.string.tip_amount, "$0.00"),
+        Text(text = stringResource(R.string.tip_amount, tip),
             style = MaterialTheme.typography.displaySmall)
 
 
@@ -88,15 +91,18 @@ fun CalculateTip() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditNumberField(modifier: Modifier = Modifier){
-    var amountInput by remember { mutableStateOf("") }
-    TextField(value = amountInput,
-        onValueChange = { amountInput = it },
+fun EditNumberField(value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier){
+
+
+
+    TextField(value = value,
+        onValueChange = onValueChange,
         label = { Text(text = stringResource(id =R.string.bill_amount))},
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = Modifier,
     )
+
 }
 
 
