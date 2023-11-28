@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.annotation.DrawableRes
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -104,7 +105,7 @@ fun CalculateTip() {
         Spacer(modifier = Modifier.height(16.dp))
 
         EditNumberField(label = R.string.how_was_the_service, value = tipInput, onValueChange = {tipInput = it },
-            
+
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done),
             modifier = Modifier
@@ -167,8 +168,8 @@ fun RoundTheTip(roundUp: Boolean,onRoundUpChanged: (Boolean) -> Unit, modifier :
 
 
 
-
-private fun calculateTip(amount: Double, tipPercent: Double, roundUp: Boolean): String{
+@VisibleForTesting
+internal fun calculateTip(amount: Double, tipPercent: Double, roundUp: Boolean): String{
     var tip = tipPercent/100 * amount
     if (roundUp){
         tip = kotlin.math.ceil(tip)
