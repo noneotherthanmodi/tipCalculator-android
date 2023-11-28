@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -81,11 +82,16 @@ fun CalculateTip() {
                 .padding(bottom = 16.dp, top = 40.dp),
         )
 
-        EditNumberField(label = R.string.bill_amount,value = amountInput, onValueChange = {amountInput = it },modifier = Modifier
+        EditNumberField(label = R.string.bill_amount,value = amountInput, onValueChange = {amountInput = it },
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next)
+            ,modifier = Modifier
             .padding(bottom = 32.dp)
             .fillMaxWidth())
         
         EditNumberField(label = R.string.how_was_the_service, value = tipInput, onValueChange = {tipInput = it },
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done),
             modifier = Modifier.padding(top = 30.dp,bottom = 32.dp).fillMaxWidth())
 
         Text(text = stringResource(R.string.tip_amount, tip),
@@ -102,6 +108,7 @@ fun CalculateTip() {
 fun EditNumberField(@StringRes label: Int,
                     value: String,
                     onValueChange: (String) -> Unit,
+                    keyboardOptions : KeyboardOptions
                     modifier: Modifier = Modifier){
 
 
@@ -110,7 +117,7 @@ fun EditNumberField(@StringRes label: Int,
         onValueChange = onValueChange,
         label = { Text(text = stringResource(id =label))},
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = keyboardOptions,
         modifier = Modifier,
     )
 
