@@ -59,13 +59,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CalculateTip() {
     var amountInput by remember { mutableStateOf("") }
+    var tipInput by remember { mutableStateOf("") }
+    val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
 
     val amount = amountInput.toDoubleOrNull() ?: 0.0    //elvis operator that returns 0.0 if field is null
-    val tip = calculateTip(amount)
+    val tip = calculateTip(amount,tipPercent)
+
+
 
     Column(modifier = Modifier
         .statusBarsPadding()
-        .padding(horizontal = 40.dp)
+        .padding(40.dp)
         .verticalScroll(rememberScrollState())
         .safeDrawingPadding(),
         verticalArrangement = Arrangement.Center,
@@ -81,7 +85,8 @@ fun CalculateTip() {
             .padding(bottom = 32.dp)
             .fillMaxWidth())
         
-//        EditNumberField(value = , onValueChange = )
+        EditNumberField(label = R.string.how_was_the_service, value = tipInput, onValueChange = {tipInput = it },
+            modifier = Modifier.padding(top = 30.dp,bottom = 32.dp).fillMaxWidth())
 
         Text(text = stringResource(R.string.tip_amount, tip),
             style = MaterialTheme.typography.displaySmall)
@@ -112,7 +117,7 @@ fun EditNumberField(@StringRes label: Int,
 }
 
 
-private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String{
+private fun calculateTip(amount: Double, tipPercent: Double): String{
     val tip = tipPercent/100 * amount
     return NumberFormat.getCurrencyInstance().format(tip)
 }
