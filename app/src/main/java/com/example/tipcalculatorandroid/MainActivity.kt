@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Layout.Alignment
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 
 import androidx.compose.foundation.layout.Column
@@ -76,9 +77,11 @@ fun CalculateTip() {
                 .padding(bottom = 16.dp, top = 40.dp),
         )
 
-        EditNumberField(value = amountInput, onValueChange = {amountInput = it },modifier = Modifier
+        EditNumberField(label = R.string.bill_amount,value = amountInput, onValueChange = {amountInput = it },modifier = Modifier
             .padding(bottom = 32.dp)
             .fillMaxWidth())
+        
+//        EditNumberField(value = , onValueChange = )
 
         Text(text = stringResource(R.string.tip_amount, tip),
             style = MaterialTheme.typography.displaySmall)
@@ -91,13 +94,16 @@ fun CalculateTip() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditNumberField(value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier){
+fun EditNumberField(@StringRes label: Int,
+                    value: String,
+                    onValueChange: (String) -> Unit,
+                    modifier: Modifier = Modifier){
 
 
 
     TextField(value = value,
         onValueChange = onValueChange,
-        label = { Text(text = stringResource(id =R.string.bill_amount))},
+        label = { Text(text = stringResource(id =label))},
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = Modifier,
